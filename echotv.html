@@ -6,53 +6,88 @@
 <title>EchoTV — Select a Channel</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" />
 <style>
-  :root{
-    --bg:#0b0f14; --card:#121923; --ink:#e6ecf3; --muted:#8aa0b3; --brand:#3b82f6; --accent:#22c55e;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--ink)}
-  header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1f2a36;background:#0d141d;position:sticky;top:0;z-index:10}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:700}
-  .logo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--brand),#8b5cf6)}
-  .now{font-size:12px;color:var(--muted)}
-  .wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;padding:14px;max-width:1400px;margin:0 auto}
-  @media (max-width:900px){ .wrap{grid-template-columns:1fr; } }
-  .guide{background:var(--card);border:1px solid #1f2a36;border-radius:14px;height:78vh;overflow:auto}
-  .guide h3{margin:12px;padding:0 8px;color:var(--muted);font-weight:600}
-  .item{display:flex;gap:10px;padding:10px 12px;border-top:1px solid #18212d;cursor:pointer}
-  .item:first-of-type{border-top:none}
-  .idx{width:26px;height:26px;display:grid;place-items:center;border-radius:7px;background:#172131;color:#9db4c9;font-size:12px;flex:0 0 auto}
-  .meta{flex:1;overflow:hidden}
-  .title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .item.active{background:#0f1722;border-left:3px solid var(--brand);padding-left:9px}
-  .stage{background:var(--card);border:1px solid #1f2a36;border-radius:14px;padding:12px;height:78vh;display:flex;flex-direction:column}
-  video{width:100%;height:100%;background:#000;border-radius:10px}
-  .playerWrap{position:relative;flex:1;display:flex}
-  .overlay{
-    position:absolute;inset:0;display:grid;place-items:center;
-    background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.15) 35%,rgba(0,0,0,.0));
-    opacity:0;pointer-events:none;transition:.25s;
-  }
-  .overlay.show{opacity:1;pointer-events:auto}
-  .unmute{
-    padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);
-    background:rgba(0,0,0,.45);color:#fff;font-weight:700;backdrop-filter: blur(6px);cursor:pointer
-  }
-  .timeline{margin-top:10px}
-  .bar{height:8px;background:#172131;border-radius:999px;overflow:hidden}
-  .fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--accent))}
-  .row{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
-  .chips{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .chip{padding:6px 10px;border-radius:10px;background:#172131;color:#b6c7d8;font-weight:600}
-  .chip.live{background:#2b1b1b;color:#ffb3b3;border:1px solid #4b2626}
-  .btn{padding:8px 12px;border-radius:10px;border:1px solid #233144;background:#101724;color:#bcd0e3;cursor:pointer}
-  .btn:hover{border-color:#2f425b}
-  .hint{font-size:12px;color:#7f95a9}
+:root{
+  --bg:#0b0f14; --card:#121923; --ink:#e6ecf3; --muted:#8aa0b3; --brand:#3b82f6; --accent:#22c55e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #1f2a36;background:#0d141d;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;cursor:pointer}
+.logo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--brand),#8b5cf6)}
+.now{font-size:12px;color:var(--muted)}
+.wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;padding:14px;max-width:1400px;margin:0 auto}
+.guide{background:var(--card);border:1px solid #1f2a36;border-radius:14px;height:78vh;overflow:auto}
+.guide h3{margin:12px;padding:0 8px;color:var(--muted);font-weight:600}
+.item{display:flex;gap:10px;padding:10px 12px;border-top:1px solid #18212d;cursor:pointer}
+.item:first-of-type{border-top:none}
+.idx{width:26px;height:26px;display:grid;place-items:center;border-radius:7px;background:#172131;color:#9db4c9;font-size:12px;flex:0 0 auto}
+.meta{flex:1;overflow:hidden}
+.title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item.active{background:#0f1722;border-left:3px solid var(--brand);padding-left:9px}
+.stage{background:var(--card);border:1px solid #1f2a36;border-radius:14px;padding:12px;height:78vh;display:flex;flex-direction:column}
+video{width:100%;height:100%;background:#000;border-radius:10px}
+.playerWrap{position:relative;flex:1;display:flex}
+.overlay{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.15) 35%,rgba(0,0,0,.0));
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+.unmute{
+  padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.45);color:#fff;font-weight:700;backdrop-filter: blur(6px);cursor:pointer
+}
+.timeline{margin-top:10px}
+.bar{height:8px;background:#172131;border-radius:999px;overflow:hidden}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,var(--brand),var(--accent))}
+.row{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:12px;color:var(--muted)}
+.chips{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chip{padding:6px 10px;border-radius:10px;background:#172131;color:#b6c7d8;font-weight:600}
+.chip.live{background:#2b1b1b;color:#ffb3b3;border:1px solid #4b2626}
+.btn{padding:8px 12px;border-radius:10px;border:1px solid #233144;background:#101724;color:#bcd0e3;cursor:pointer}
+.btn:hover{border-color:#2f425b}
+.hint{font-size:12px;color:#7f95a9}
+
+/* MOBILE STYLES */
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr; grid-template-rows:auto 1fr; gap:8px;}
+  .guide{height:30vh;border-radius:12px;}
+  .stage{height:50vh;padding:8px;}
+}
+
+/* MOBILE LANDSCAPE OPTIMIZED */
+@media (max-width:700px) and (orientation: landscape){
+  .wrap{display:flex;flex-direction:row;height:calc(100vh - 60px);padding:8px;}
+  .guide{flex:0 0 40%;height:100vh;}
+  .stage{flex:1;height:100vh;padding:8px;}
+  .playerWrap video{border-radius:6px;}
+  .fullscreen-btn{position:absolute;bottom:14px;right:14px;padding:6px 10px;border-radius:6px;background:var(--brand);color:#fff;border:none;cursor:pointer;z-index:20}
+}
+
+/* MODAL FOR DESKTOP/MOBILE CHOICE */
+#deviceModal{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:50;
+}
+#deviceModalContent{
+  background:var(--card);padding:20px;border-radius:12px;text-align:center;color:var(--ink);max-width:300px;width:90%;
+}
+#deviceModalContent h2{margin-bottom:12px;}
+#deviceModalContent button{margin:6px;padding:8px 12px;border-radius:8px;border:none;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;}
+#deviceModalContent button:hover{background:#2563eb;}
 </style>
 </head>
 <body>
+<!-- DEVICE CHOICE MODAL -->
+<div id="deviceModal">
+  <div id="deviceModalContent">
+    <h2>Choose View Mode</h2>
+    <button id="desktopBtn">Desktop</button>
+    <button id="mobileBtn">Mobile</button>
+  </div>
+</div>
+
 <header>
-  <div class="brand">
+  <div class="brand" id="brandBtn">
     <div class="logo"></div>
     <div>
       <div>EchoTV</div>
@@ -69,7 +104,6 @@
   <!-- CHANNELS -->
   <aside class="guide" id="guide">
     <h3>Channels</h3>
-    <!-- channels injected here -->
   </aside>
 
   <!-- PLAYER -->
@@ -79,6 +113,7 @@
       <div class="overlay show" id="overlay">
         <button class="unmute" id="unmuteBtn">Tap to Unmute 🔊</button>
       </div>
+      <button class="fullscreen-btn" id="fullscreenBtn">Fullscreen</button>
     </div>
     <div class="timeline">
       <div class="bar"><div class="fill" id="fill"></div></div>
@@ -91,70 +126,36 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
-
 <script>
-// All channels hardcoded
+// DEVICE CHOICE LOGIC
+const deviceModal = document.getElementById('deviceModal');
+const desktopBtn = document.getElementById('desktopBtn');
+const mobileBtn = document.getElementById('mobileBtn');
+let isMobileView = false;
+
+desktopBtn.addEventListener('click', ()=>{
+  deviceModal.style.display = 'none';
+  isMobileView = false;
+});
+mobileBtn.addEventListener('click', ()=>{
+  deviceModal.style.display = 'none';
+  isMobileView = true;
+  if(window.innerWidth < window.innerHeight) alert("Please rotate your device to landscape for best experience.");
+});
+
+// CLOCK
+setInterval(()=>{
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+},1000);
+
+// CHANNEL DATA
 const PLAYLIST = [
   { title: "1-2-3 TV (270p)", url: "https://123tv-mx1.flex-cdn.net/index.m3u8" },
   { title: "1Almere TV (720p)", url: "https://d3472rjicrodic.cloudfront.net/nlpo/clr-nlpo/709d5260/index.m3u8" },
   { title: "1KZN TV (576p)", url: "https://cdn.freevisiontv.co.za/sttv/smil:1kzn.stream.smil/playlist.m3u8" },
   { title: "1Music Channel Hungary (576p)", url: "http://1music.hu/1music.m3u8" },
-  { title: "1TV", url: "https://live20.bozztv.com/dvrfl05/gin-1tvafg/index.m3u8" },
-  { title: "1TV (720p)", url: "https://tv.cdn.xsg.ge/gpb-1tv/index.m3u8" },
-  { title: "1Twente TV (1080p)", url: "https://ms7.mx-cd.net/dtv-11/198-989148/1Twente_TV.smil/chunklist_w954512639_b4292608_slNLD.m3u8" },
-  { title: "002 Radio TV (720p)", url: "https://cdn.002radio.com:3909/live/radio002live.m3u8" },
-  { title: "2GB Sydney (1080p)", url: "https://2gblive.akamaized.net/hls/live/2033805/2GB/index.m3u8" },
-  { title: "2M", url: "https://viamotionhsi.netplus.ch/live/eds/2mmaroc/browser-HLS8/2mmaroc.m3u8" },
-  { title: "2M Monde +1 (1080p)", url: "https://d2qh3gh0k5vp3v.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-n6pess5lwbghr/2M_ES.m3u8" },
-  { title: "2STV", url: "http://69.64.57.208/2stv/playlist.m3u8" },
-  { title: "2TV (720p)", url: "https://tv.cdn.xsg.ge/gpb-2tv/index.m3u8" },
-  { title: "3/24 (1080p)", url: "https://directes-tv-int.3catdirectes.cat/live-origin/canal324-hls/master.m3u8" },
-  { title: "3ABN Canada", url: "https://3abn.bozztv.com/3abncanada/3ABN/master.m3u8" },
-  { title: "3ABN Dare To Dream Network", url: "https://3abn.bozztv.com/3abn2/d2d_live/smil:d2d_live.smil/playlist.m3u8" },
-  { title: "3ABN English", url: "https://3abn.bozztv.com/3abn2/3abn_live/smil:3abn_live.smil/playlist.m3u8" },
-  { title: "3ABN French", url: "https://3abn.bozztv.com/3abn2/Fre_live/smil:Fre_live.smil/playlist.m3u8" },
-  { title: "3ABN International", url: "https://3abn.bozztv.com/3abn2/Int_live/smil:Int_live.smil/playlist.m3u8" },
-  { title: "3ABN Kids", url: "https://3abn.bozztv.com/3abn2/Kids_live/smil:Kids_live.smil/playlist.m3u8" },
-  { title: "3ABN Latino", url: "https://3abn.bozztv.com/3abn2/Lat_live/smil:Lat_live.smil/playlist.m3u8" },
-  { title: "3ABN Praise Him Music Network", url: "https://3abn.bozztv.com/3abn1/PraiseHim/smil:PraiseHim.smil/playlist.m3u8" },
-  { title: "3ABN Proclaim! Network", url: "https://3abn.bozztv.com/3abn2/Pro_live/smil:Pro_live.smil/playlist.m3u8" },
-  { title: "3ABN TV Uganda (720p) [Not 24/7]", url: "https://3abn.bozztv.com/3abn/3abn_uganda_live/index.m3u8" },
-  { title: "3AW Melbourne (1080p)", url: "https://3awlive.akamaized.net/hls/live/2032295/3AW/index.m3u8" },
-  { title: "3HD", url: "https://lb1-live-mv.v2h-cdn.com/hls/ffae/3hd/3hd.m3u8" },
-  { title: "3sat (720p) [Geo-blocked]", url: "https://zdf-hls-18.akamaized.net/hls/live/2016501/dach/high/master.m3u8" },
-  { title: "3sat HD (1080p)", url: "https://viamotionhsi.netplus.ch/live/eds/3sathd/browser-HLS8/3sathd.m3u8" },
-  { title: "3 Stones TV (240p) [Not 24/7]", url: "https://goliveafrica.media:9998/live/64d21e682fd26/index.m3u8" },
-  { title: "4Afghanistan", url: "https://4afghls.persiana.live/hls/stream.m3u8" },
-  { title: "4Afghanistan", url: "https://4afghls.wns.live/hls/stream.m3u8" },
-  { title: "4DmásNoticias TV (1080p) [Not 24/7]", url: "https://rds3.desdeparaguay.net/4dmasnoticiastv/4dmasnoticiastv/playlist.m3u8" },
-  { title: "4E (1080p)", url: "http://eu2.tv4e.gr:554/live/smil:myStream.sdp.smil/playlist.m3u8" },
-  { title: "4 Fun TV (288p) [Not 24/7]", url: "https://stream.4fun.tv:8888/hls/4f.m3u8" },
-  { title: "4K Travel TV", url: "https://streams2.sofast.tv/sofastplayout/33c31ac4-51fa-46ae-afd0-0d1fe5e60a80_0_HLS/master.m3u8" },
-  { title: "4Music", url: "https://4muhls.persiana.live/hls/stream.m3u8" },
-  { title: "4Music", url: "https://itthls.wns.live/hls/stream.m3u8" },
-  { title: "4Sport", url: "https://pepsi.abntv.live/hls/4spstream.m3u8" },
-  { title: "4U TV (720p)", url: "https://hls.4utv.live/hls/stream.m3u8" },
-  { title: "5-Minute Craft (1080p)", url: "https://soul-5mincrafteng-rakuten.amagi.tv/playlist.m3u8" },
-  { title: "5AAB TV (720p) [Not 24/7]", url: "http://158.69.124.9:1935/5aabtv/5aabtv/playlist.m3u8" },
-  { title: "5TV", url: "https://live20.bozztv.com/gin-trn09/gt-amtv5/index.m3u8" },
-  { title: "5TV Corrientes (480p) [Not 24/7]", url: "http://www.coninfo.net:1935/tvcinco/live1/playlist.m3u8" },
-  { title: "5 канал", url: "http://178.217.72.66:8080/5_Kanal/index.m3u8" },
-  { title: "6PR Perth (1080p)", url: "https://6prlive.akamaized.net/hls/live/2033806/6PR/index.m3u8" },
-  { title: "6ter (1080p) [Geo-blocked]", url: "https://viamotionhsi.netplus.ch/live/eds/6ter/browser-HLS8/6ter.m3u8" },
-  { title: "6 TV Telugu (720p)", url: "https://cdn-1.pishow.tv/live/232/master.m3u8" },
-  { title: "7/8 TV (1080p)", url: "https://ms4.sedemosmi.tv/live/M3E5ajhtdjJkaXBscmZubmUxMmh1cjN1bjZrbm5wZW8/index.m3u8" },
-  { title: "7 RadioVisione (720p)", url: "https://stream10.xdevel.com/video1s976543-1932/stream/playlist.m3u8" },
-  { title: "7S Music (576p) [Not 24/7]", url: "http://103.199.161.254/Content/7smusic/Live/Channel(7smusic)/index.m3u8" },
-  { title: "7 STORIA (720p)", url: "https://stream10.xdevel.com/video2s976543-2104/stream/playlist.m3u8" },
-  { title: "7 TeleValencia (576p)", url: "https://play.cdn.enetres.net/9E9557EFCEBB43A89CEC8FBD3C500247022/028/playlist.m3u8" },
-  { title: "7TV Senegal", url: "https://live20.bozztv.com/dvrfl06/astv/astv-7tv/index.m3u8" },
-  { title: "7 YOU & ME (720p)", url: "https://stream10.xdevel.com/video0s977798-2239/stream/playlist.m3u8" },
-  { title: "8 La Marina TV (576p)", url: "https://streaming005.gestec-video.com/hls/canal24.m3u8" },
-  { title: "8NTV (1080p)", url: "https://60417ddeaf0d9.streamlock.net/ntv/videontv/playlist.m3u8" },
-  { title: "8TV", url: "https://cdn6.163189.xyz/live/8tv/stream.m3u8" },
-  { title: "9Gem (720p) [Geo-blocked]", url: "https://9now-livestreams.akamaized.net/hls/live/2008311/gem-syd/master.m3u8" },
-  { title: "9Go! (720p) [Geo-blocked]", url: "https://9now-livestreams.akamaized.net/hls/live/2008312/go-syd/master.m3u8" },
-  { title: "9 la Loma TV (1080p) [Geo-blocked]", url: "https://9laloma.tv/live.m3u8" }
+  { title: "1TV", url: "https://live20.bozztv.com/dvrfl05/gin-1tvafg/index.m3u8" }
 ];
 
 const video = document.getElementById('player');
@@ -166,16 +167,12 @@ const nowTitleEl = document.getElementById('nowTitle');
 const overlayEl = document.getElementById('overlay');
 const unmuteBtn = document.getElementById('unmuteBtn');
 const skipBtn = document.getElementById('skipBtn');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
 
 let idx = 0;
 let hls = null;
 
-// Clock
-setInterval(()=>{
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-},1000);
-
+// LOAD HLS
 function loadSource(url){
   if(hls){ hls.destroy(); hls=null; }
   if(url.endsWith(".m3u8")){
@@ -191,6 +188,7 @@ function loadSource(url){
   } else video.src = url;
 }
 
+// RENDER CHANNEL GUIDE
 function renderGuide(){
   const frag = document.createDocumentFragment();
   PLAYLIST.forEach((item,i)=>{
@@ -206,6 +204,7 @@ function renderGuide(){
   guideEl.appendChild(frag);
 }
 
+// HIGHLIGHT ACTIVE CHANNEL
 function highlightActive(){
   guideEl.querySelectorAll('.item').forEach(el=>el.classList.remove('active'));
   const active = guideEl.querySelector(`.item[data-index="${idx}"]`);
@@ -213,11 +212,13 @@ function highlightActive(){
   active && active.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 
+// SELECT CHANNEL
 function selectChannel(newIndex){
   idx = newIndex;
   startChannel();
 }
 
+// START CHANNEL
 function startChannel(){
   const item = PLAYLIST[idx];
   nowTitleEl.textContent = item.title;
@@ -231,20 +232,31 @@ function startChannel(){
   overlayEl.classList.toggle('show', video.muted);
 }
 
-// Unmute
+// UNMUTE
 unmuteBtn.addEventListener('click', ()=>{
   video.muted=false;
   overlayEl.classList.remove('show');
 });
 
-// Next channel
+// NEXT CHANNEL
 skipBtn.addEventListener('click', ()=>{
   idx = (idx+1)%PLAYLIST.length;
   startChannel();
 });
 
+// PLAY EVENT
 video.addEventListener('play', ()=> overlayEl.classList.toggle('show', video.muted));
 
+// FULLSCREEN FOR MOBILE
+fullscreenBtn.addEventListener('click', ()=>{
+  if(video.requestFullscreen){
+    video.requestFullscreen();
+  } else if(video.webkitEnterFullscreen){
+    video.webkitEnterFullscreen();
+  }
+});
+
+// RENDER
 renderGuide();
 </script>
 </body>
