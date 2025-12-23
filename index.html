@@ -2,135 +2,219 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>EchoTV – Streaming Service</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EchoTV - Sentinel X Systems</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+:root{
+  --primary:#6ee7f9;
+  --secondary:#a78bfa;
+  --accent:#22d3ee;
+  --dark:#050816;
+  --glass:rgba(255,255,255,0.08);
+}
 
-    body {
-        font-family: 'Montserrat', sans-serif;
-        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        color: white;
-        text-align: center;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    header {
-        animation: fadeInDown 1s ease-in-out;
-    }
+body{
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  background:
+    linear-gradient(to bottom, rgba(5,8,22,.85), rgba(5,8,22,.95)),
+    url("images/background.png") center/cover no-repeat fixed;
+  color:#e5e7eb;
+}
 
-    h1 {
-        font-family: 'Playfair Display', serif;
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-        letter-spacing: 2px;
-    }
+/* ===== GLOBAL ===== */
+a{color:var(--primary);text-decoration:none;font-weight:600}
+section{padding:70px 20px}
+.container{max-width:1150px;margin:auto}
 
-    h1 span {
-        color: #00e1ff;
-    }
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:
+    linear-gradient(to bottom, rgba(5,8,22,.6), rgba(5,8,22,.9)),
+    url("images/wallpaper.png") center/cover no-repeat;
+}
 
-    p {
-        font-size: 1.2rem;
-        max-width: 700px;
-        margin: 1rem auto;
-        line-height: 1.6;
-        opacity: 0.9;
-    }
+.hero img{
+  width:160px;
+  margin-bottom:25px;
+  filter:drop-shadow(0 0 35px rgba(110,231,249,.6));
+}
 
-    .btn {
-        display: inline-block;
-        margin-top: 2rem;
-        padding: 0.8rem 2rem;
-        background: #00e1ff;
-        color: #0f2027;
-        font-weight: bold;
-        border-radius: 50px;
-        text-decoration: none;
-        font-size: 1.1rem;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 15px rgba(0, 225, 255, 0.3);
-    }
+.hero h1{
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  font-weight:800;
+  margin-bottom:15px;
+}
 
-    .btn:hover {
-        background: white;
-        color: #00e1ff;
-        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
-    }
+.hero p{
+  max-width:700px;
+  margin:auto;
+  font-size:1.05rem;
+  color:#c7d2fe;
+}
 
-    footer {
-        position: absolute;
-        bottom: 20px;
-        width: 100%;
-        font-size: 0.9rem;
-        opacity: 0.6;
-    }
+/* ===== BUTTON ===== */
+.btn{
+  display:inline-block;
+  margin-top:30px;
+  padding:16px 42px;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#020617;
+  font-weight:800;
+  letter-spacing:.5px;
+  box-shadow:0 0 35px rgba(110,231,249,.6);
+}
 
-    .icons {
-        margin-top: 1.5rem;
-    }
+/* ===== GLASS CARD ===== */
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;
+  padding:35px;
+  box-shadow:0 0 60px rgba(0,0,0,.4);
+}
 
-    .icons i {
-        font-size: 1.5rem;
-        margin: 0 10px;
-        color: #00e1ff;
-        transition: transform 0.3s ease;
-    }
+/* ===== PRICING ===== */
+.price{
+  font-size:3.4rem;
+  font-weight:900;
+  color:var(--primary);
+  margin:15px 0;
+}
 
-    .icons i:hover {
-        transform: scale(1.2);
-        color: white;
-    }
+.small{color:#94a3b8;font-size:.95rem}
 
-    @keyframes fadeInDown {
-        0% {
-            opacity: 0;
-            transform: translateY(-50px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+/* ===== GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:30px;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  padding:40px 20px;
+  text-align:center;
+  color:#94a3b8;
+  font-size:.9rem;
+}
 </style>
 </head>
+
 <body>
 
-<header>
-    <h1><i class="fas fa-tv"></i> Welcome to <span>EchoTV</span></h1>
-    <p>EchoTV is the flagship digital TV station by <strong>Sentinel-X Systems Zimbabwe</strong>.  
-       Our mission is simple: deliver free, high-quality entertainment curated by the Sentinel-X Media Team.  
-       We bring you the best of documentaries, music, lifestyle, tech, and timeless classics — all in one place.</p>
-    
-    <p>EchoTV isn’t just a channel — it’s the <em>heartbeat</em> of Zimbabwe’s new entertainment era.</p>
-    
-    <a href="echotv.html" class="btn"><i class="fas fa-play-circle"></i> Start Watching</a>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <img src="logo/logo.png" alt="EchoTV Logo">
+    <h1>EchoTV Streaming Service</h1>
+    <p>
+      A modern streaming platform for entertainment, culture, creativity,
+      sports, documentaries, and original content — delivered at a price
+      that removes barriers.
+    </p>
+    <a href="#pricing" class="btn">Subscribe Now</a>
+  </div>
+</section>
 
-    <div class="icons">
-        <i class="fab fa-youtube"></i>
-        <i class="fab fa-facebook"></i>
-        <i class="fab fa-twitter"></i>
-        <i class="fab fa-instagram"></i>
+<!-- WHAT IS ECHOTV -->
+<section>
+  <div class="container">
+    <div class="card">
+      <h2>What is EchoTV?</h2>
+      <p style="margin-top:15px;line-height:1.7;color:#cbd5f5">
+        EchoTV is a subscription-based streaming service designed to empower
+        viewers and creators alike. We host curated content including sports,
+        film, drama, lifestyle, documentaries, and African creative work.
+        <br><br>
+        No complex tiers. No hidden fees. One simple annual subscription.
+      </p>
     </div>
-</header>
+  </div>
+</section>
 
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="grid">
+      <div class="card">
+        <h2>Simple Pricing</h2>
+        <div class="price">$0.99 / year</div>
+        <p class="small">
+          This is the base charge.  
+          No monthly fees.  
+          No additional costs.  
+          Full platform access.
+        </p>
+        <img src="images/pricing.png" style="width:100%;margin-top:20px;border-radius:14px">
+      </div>
+
+      <div class="card">
+        <h2>Payment Method</h2>
+        <p style="margin-top:12px;line-height:1.7">
+          EchoTV uses <strong>PayNow</strong> for secure local and international
+          payments. Users must have an active PayNow account.
+        </p>
+
+        <a href="https://www.paynow.co.zw" target="_blank" class="btn">
+          Visit PayNow
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYNOW GUIDE -->
+<section>
+  <div class="container">
+    <div class="card">
+      <h2>How to Create a PayNow Account</h2>
+      <ol style="margin-top:15px;line-height:1.9;color:#cbd5f5;padding-left:20px">
+        <li>Visit <a href="https://www.paynow.co.zw" target="_blank">paynow.co.zw</a></li>
+        <li>Click <strong>Sign Up</strong></li>
+        <li>Choose <strong>Individual</strong> or <strong>Business</strong></li>
+        <li>Complete registration and verify your details</li>
+        <li>Link EcoCash, bank account, or card</li>
+      </ol>
+
+      <p style="margin-top:20px;color:#94a3b8">
+        Once payment is completed, your <strong>Token ID</strong> will be
+        activated automatically and linked to your EchoTV account,
+        granting full access to the platform.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CREATORS INVITE -->
+<section>
+  <div class="container">
+    <div class="card">
+      <h2>Content Creators</h2>
+      <p style="margin-top:12px;line-height:1.7">
+        EchoTV welcomes filmmakers, sports creators, storytellers,
+        photographers, and educators to submit original content.
+      </p>
+
+      <img src="images/invite.png"
+           style="width:100%;margin-top:25px;border-radius:18px">
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-    &copy; 2025 EchoTV • Powered by Sentinel-X Systems Zimbabwe
+  Designed & Maintained by <strong>Sentinel Nexus Systems</strong><br>
+  © EchoTV — All rights reserved
 </footer>
 
 </body>
